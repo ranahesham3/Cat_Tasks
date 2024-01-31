@@ -1,0 +1,45 @@
+/*
+ * Seven_Segment_config.c
+ *
+ *  Created on: Aug 24, 2023
+ *      Author: DELL
+ */
+
+#include "stdTypes.h"
+#include "errorState.h"
+
+#include "DIO_init.h"
+
+#include "Seven_Segment_config.h"
+#include "Seven_Segment_priv.h"
+
+
+SEG_t SEVSEG_AstrSegConfig[SEG_NUM]=
+{
+		{
+		DIO_u8PIN0,DIO_u8PORTA,
+		DIO_u8PIN1,DIO_u8PORTA,
+		DIO_u8PIN0,DIO_u8PORTB,
+		DIO_u8PIN3,DIO_u8PORTA,
+		DIO_u8PIN4,DIO_u8PORTB,
+		DIO_u8PIN5,DIO_u8PORTB,
+		DIO_u8PIN6,DIO_u8PORTB,
+		NOT_CONNECTED,NOT_CONNECTED,
+		NOT_CONNECTED,NOT_CONNECTED,
+		COMMON_ANOD,
+		COMMON_ANOD
+		},
+		{
+		DIO_u8PORTC,DIO_u8PIN0,
+		DIO_u8PORTC,DIO_u8PIN1,
+		DIO_u8PORTC,DIO_u8PIN2,
+		DIO_u8PORTC,DIO_u8PIN3,
+		DIO_u8PORTD,DIO_u8PIN4,
+		DIO_u8PORTD,DIO_u8PIN5,
+		DIO_u8PORTD,DIO_u8PIN6,
+		NOT_CONNECTED,NOT_CONNECTED,
+		NOT_CONNECTED,NOT_CONNECTED,
+		COMMON_CATHOD,
+		COMMON_CATHOD
+		}
+};
