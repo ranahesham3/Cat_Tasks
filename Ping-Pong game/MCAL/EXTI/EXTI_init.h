@@ -28,6 +28,9 @@ ES_t EXTI_enuEnableINT(u8 Copy_u8EXTI_ID);
 
 ES_t EXTI_enuDisableINT(u8 Copy_u8EXTI_ID);
 
-ES_t EXTI_enuCallBack(u8 Copy_u8EXTI_ID , void (*Copy_PtrFunc)(void));
+ES_t EXTI_enuCallBack(u8 Copy_u8EXTI_ID , volatile void (*Copy_PtrFunc)(void*) , volatile void* Copy_pvArgument );
+//if you don't have an argument to pass ---> pass /write NULL
+
+
 
 #endif /* EXTI_INIT_H_ */

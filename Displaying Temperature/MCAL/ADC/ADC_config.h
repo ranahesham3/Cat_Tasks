@@ -1,0 +1,75 @@
+/*
+ * ADC_config.h
+ *
+ *  Created on: Sep 18, 2023
+ *      Author: DELL
+ */
+
+#ifndef ADC_CONFIG_H_
+#define ADC_CONFIG_H_
+
+
+
+
+#define ADC_U32TIMEOUT				50000
+
+
+#define ADC_INITIAL_STATE			ADC_ENABLE
+/*choose from
+ * ADC_ENABLE
+ * ADC_DISABLE
+ */
+
+
+#define ADC_REFRENCE_SELECTION		ADC_AVCC
+/* choose from
+ADC_AREF
+ADC_AVCC
+ADC_INTERNL_REF
+ */
+
+
+#define ADC_PRESCALER_SELECTION		Division_Factor_128
+/*
+ Division_Factor_2
+ Division_Factor_4
+ Division_Factor_8
+ Division_Factor_16
+ Division_Factor_32
+ Division_Factor_64
+ Division_Factor_128		//use it if you care about accuracy more than speed & 50 KHz<=resolution<=200 KHz
+ */
+
+
+#define ADC_RESOLUTION				ADC_10BIT_RESOLUTION
+/*
+ADC_8BIT_RESOLUTION
+ADC_10BIT_RESOLUTION
+ */
+
+
+#define ADC_AUTO_TRIGGER_STATE		ADC_AUTO_TRIGGER_ENABLE
+/*
+ADC_AUTO_TRIGGER_DISABLE
+ADC_AUTO_TRIGGER_ENABLE
+ */
+
+
+#define ADC_AUTO_TRIGGER_SOURCE		ADC_FREE_RUNNING_MODE
+/*
+ADC_FREE_RUNNING_MODE
+ADC_ANALOG_COMPARATOR
+ADC_EXTERNAL_INTERRUPT_REQUIST0
+ADC_TIMER0_COPMPARE_MATCH
+ADC_TIMER0_OVERFLOW
+ADC_TIMER1_COPMPARE_MATCH_B
+ADC_TIMER1_OVERFLOW
+ADC_TIMER1_CAPTURE_EVENT
+*/
+
+
+
+
+
+
+#endif /* ADC_CONFIG_H_ */

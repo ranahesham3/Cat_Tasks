@@ -23,7 +23,7 @@
 #define INT2			3
 
 /**************************************************/
-//MCU Control and Status Register
+//MCU Control Register
 //Set sense level for INT0,INT1
 #define MCUCR				*((volatile u8*)0x55)
 #define MCUCR_ISC00				0
@@ -31,7 +31,7 @@
 #define MCUCR_ISC10				2
 #define MCUCR_ISC11				3
 
-//MCU Control Register
+//MCU Control and Status Register
 //Set sense level for INT2
 #define MCUCSR				*((volatile u8*)0x54)
 #define MCUCSR_ISC2				6

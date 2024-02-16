@@ -1,5 +1,4 @@
-/*
- * EXTI_prog.c
+/* EXTI_prog.c
  *
  *  Created on: Aug 30, 2023
  *      Author: DELL
@@ -17,8 +16,12 @@
 #include "EXTI_config.h"
 #include "EXTI_priv.h"
 
-static void (* EXTI_PtrArrFunc[3]) (void)={NULL , NULL , NULL};
-
+//static void (*EXTI_PtrFuncINT0)(void)=NULL;
+//static void (*EXTI_PtrFuncINT1)(void)=NULL;
+//static void (*EXTI_PtrFuncINT2)(void)=NULL;
+volatile static void (* EXTI_PtrArrFunc[3]) (void*)={NULL , NULL , NULL};
+volatile static void* EXTI_PtrArrArgumentFunc[3]={NULL , NULL , NULL};
+//static for isolation (not be seen from other files)
 
 extern EXTI_t EXTI_AstrEXTIConfig [3];
 
@@ -33,66 +36,76 @@ ES_t EXTI_enuInit(void)
 		{
 			switch(Local_u8Iterator)
 			{
-			case INT0:
+			case 0:
 				SET_BIT(GICR,GICR_INT0);
-				switch(EXTI_AstrEXTIConfig[Local_u8Iterator].EXTI_u8State)
+				switch(EXTI_AstrEXTIConfig[Local_u8Iterator].EXTI_u8SenseLevel)
 				{
 				case LOW_LEVEL:
 					CLEAR_BIT(MCUCR,MCUCR_ISC00);
 					CLEAR_BIT(MCUCR,MCUCR_ISC01);
+					Local_enuErrorState =ES_OK;
 					break;
 				case LOGICAL_CHANGE:
 					SET_BIT(MCUCR,MCUCR_ISC00);
 					CLEAR_BIT(MCUCR,MCUCR_ISC01);
+					Local_enuErrorState =ES_OK;
 					break;
 				case FALLING_EDGE:
 					CLEAR_BIT(MCUCR,MCUCR_ISC00);
 					SET_BIT(MCUCR,MCUCR_ISC01);
+					Local_enuErrorState =ES_OK;
 					break;
 				case RISING_EDGE:
 					SET_BIT(MCUCR,MCUCR_ISC00);
 					SET_BIT(MCUCR,MCUCR_ISC01);
+					Local_enuErrorState =ES_OK;
 					break;
 				default:
 					Local_enuErrorState =ES_OUT_OF_RANGE;
 				}
 				break;
 
-			case INT1:
+			case 1:
 				SET_BIT(GICR,GICR_INT1);
-				switch(EXTI_AstrEXTIConfig[Local_u8Iterator].EXTI_u8State)
+				switch(EXTI_AstrEXTIConfig[Local_u8Iterator].EXTI_u8SenseLevel)
 				{
 				case LOW_LEVEL:
 					CLEAR_BIT(MCUCR,MCUCR_ISC10);
 					CLEAR_BIT(MCUCR,MCUCR_ISC11);
+					Local_enuErrorState =ES_OK;
 					break;
 				case LOGICAL_CHANGE:
 					SET_BIT(MCUCR,MCUCR_ISC10);
 					CLEAR_BIT(MCUCR,MCUCR_ISC11);
+					Local_enuErrorState =ES_OK;
 					break;
 				case FALLING_EDGE:
 					CLEAR_BIT(MCUCR,MCUCR_ISC10);
 					SET_BIT(MCUCR,MCUCR_ISC11);
+					Local_enuErrorState =ES_OK;
 					break;
 				case RISING_EDGE:
 					SET_BIT(MCUCR,MCUCR_ISC10);
 					SET_BIT(MCUCR,MCUCR_ISC11);
+					Local_enuErrorState =ES_OK;
 					break;
 				default:
 					Local_enuErrorState =ES_OUT_OF_RANGE;
 				}
 				break;
 
-			case INT2:
+			case 2:
 				SET_BIT(GICR,GICR_INT2);
-				switch(EXTI_AstrEXTIConfig[Local_u8Iterator].EXTI_u8State)
+				switch(EXTI_AstrEXTIConfig[Local_u8Iterator].EXTI_u8SenseLevel)
 				{
 				case FALLING_EDGE :
 					CLEAR_BIT(MCUCSR ,MCUCSR_ISC2);
+					Local_enuErrorState =ES_OK;
 					break;
 
 				case RISING_EDGE:
 					SET_BIT(MCUCSR ,MCUCSR_ISC2);
+					Local_enuErrorState =ES_OK;
 					break;
 				default:
 					Local_enuErrorState=ES_OUT_OF_RANGE;
@@ -114,7 +127,7 @@ ES_t EXTI_enuInit(void)
 
 ES_t EXTI_enuSetSenceMode(u8 Copy_u8EXTI_ID , u8 Copy_u8SenseLevel)
 {
-	ES_t Local_enuErrorState =ES_NOK;
+	ES_t Local_enuErrorState =ES_OK;
 	switch(Copy_u8EXTI_ID)
 	{
 	case INT0:
@@ -123,22 +136,18 @@ ES_t EXTI_enuSetSenceMode(u8 Copy_u8EXTI_ID , u8 Copy_u8SenseLevel)
 		case LOW_LEVEL:
 			CLEAR_BIT(MCUCR,MCUCR_ISC00);
 			CLEAR_BIT(MCUCR,MCUCR_ISC01);
-			Local_enuErrorState =ES_OK;
 			break;
 		case LOGICAL_CHANGE:
 			SET_BIT(MCUCR,MCUCR_ISC00);
 			CLEAR_BIT(MCUCR,MCUCR_ISC01);
-			Local_enuErrorState =ES_OK;
 			break;
 		case FALLING_EDGE:
 			CLEAR_BIT(MCUCR,MCUCR_ISC00);
 			SET_BIT(MCUCR,MCUCR_ISC01);
-			Local_enuErrorState =ES_OK;
 			break;
 		case RISING_EDGE:
 			SET_BIT(MCUCR,MCUCR_ISC00);
 			SET_BIT(MCUCR,MCUCR_ISC01);
-			Local_enuErrorState =ES_OK;
 			break;
 		default:
 			Local_enuErrorState =ES_OUT_OF_RANGE;
@@ -151,22 +160,18 @@ ES_t EXTI_enuSetSenceMode(u8 Copy_u8EXTI_ID , u8 Copy_u8SenseLevel)
 		case LOW_LEVEL:
 			CLEAR_BIT(MCUCR,MCUCR_ISC10);
 			CLEAR_BIT(MCUCR,MCUCR_ISC11);
-			Local_enuErrorState =ES_OK;
 			break;
 		case LOGICAL_CHANGE:
 			SET_BIT(MCUCR,MCUCR_ISC10);
 			CLEAR_BIT(MCUCR,MCUCR_ISC11);
-			Local_enuErrorState =ES_OK;
 			break;
 		case FALLING_EDGE:
 			CLEAR_BIT(MCUCR,MCUCR_ISC10);
 			SET_BIT(MCUCR,MCUCR_ISC11);
-			Local_enuErrorState =ES_OK;
 			break;
 		case RISING_EDGE:
 			SET_BIT(MCUCR,MCUCR_ISC10);
 			SET_BIT(MCUCR,MCUCR_ISC11);
-			Local_enuErrorState =ES_OK;
 			break;
 		default:
 			Local_enuErrorState =ES_OUT_OF_RANGE;
@@ -178,12 +183,10 @@ ES_t EXTI_enuSetSenceMode(u8 Copy_u8EXTI_ID , u8 Copy_u8SenseLevel)
 		{
 		case FALLING_EDGE :
 			CLEAR_BIT(MCUCSR ,MCUCSR_ISC2);
-			Local_enuErrorState =ES_OK;
 			break;
 
 		case RISING_EDGE:
 			SET_BIT(MCUCSR ,MCUCSR_ISC2);
-			Local_enuErrorState =ES_OK;
 			break;
 		default:
 			Local_enuErrorState=ES_OUT_OF_RANGE;
@@ -253,7 +256,7 @@ ES_t EXTI_enuDisableINT(u8 Copy_u8EXTI_ID)
 
 
 
-ES_t EXTI_enuCallBack(u8 Copy_u8EXTI_ID , void (*Copy_PtrFunc)(void))
+ES_t EXTI_enuCallBack(u8 Copy_u8EXTI_ID , volatile void (*Copy_PtrFunc)(void*) , volatile void* Copy_pvArgument )
 {
 	ES_t Local_enuErrorState =ES_OK;
 
@@ -263,14 +266,17 @@ ES_t EXTI_enuCallBack(u8 Copy_u8EXTI_ID , void (*Copy_PtrFunc)(void))
 		{
 		case INT0:
 			EXTI_PtrArrFunc[0]=Copy_PtrFunc;
+			EXTI_PtrArrArgumentFunc[0]=Copy_pvArgument;
 			break;
 
 		case INT1:
 			EXTI_PtrArrFunc[1]=Copy_PtrFunc;
+			EXTI_PtrArrArgumentFunc[1]=Copy_pvArgument;
 			break;
 
 		case INT2:
 			EXTI_PtrArrFunc[2]=Copy_PtrFunc;
+			EXTI_PtrArrArgumentFunc[2]=Copy_pvArgument;
 			break;
 
 		default:
@@ -294,7 +300,7 @@ ISR(VECT_INT0)
 {
 	if(EXTI_PtrArrFunc[0] !=NULL)
 	{
-		EXTI_PtrArrFunc[0]();
+		EXTI_PtrArrFunc[0](EXTI_PtrArrArgumentFunc[0]);
 	}
 }
 
@@ -303,7 +309,7 @@ ISR(VECT_INT1)
 {
 	if(EXTI_PtrArrFunc[1] !=NULL)
 	{
-		EXTI_PtrArrFunc[1]();
+		EXTI_PtrArrFunc[1](EXTI_PtrArrArgumentFunc[1]);
 	}
 }
 
@@ -312,6 +318,16 @@ ISR(VECT_INT2)
 {
 	if(EXTI_PtrArrFunc[2] !=NULL)
 	{
-		EXTI_PtrArrFunc[2]();
+		EXTI_PtrArrFunc[2] (EXTI_PtrArrArgumentFunc[2]);
 	}
 }
+
+
+
+/*
+//change the address of __bad_interrupt  from reset(address 0)to what you want
+ISR(BAD_vector)
+{
+
+}
+*/

@@ -1,9 +1,3 @@
-/*
- * main.c
- *
- *  Created on: Aug 30, 2023
- *      Author: DELL
- */
 #include "stdTypes.h"
 #include "errorState.h"
 
@@ -15,11 +9,15 @@
 
 #include "util/delay.h"
 
-u8 volatile p1=0,p2=0,p=0;//p is working as a switch to turn on\off the game
 
-void func1(void);
-void func2(void);
-void func3(void);
+u8 volatile Player_1=0,Player_2=0, Switch=0;//Switch is working as a switch to turn on\off the game
+
+void Player1Rocket(void* Copy_pvArg);
+void Player2Rocket(void* Copy_pvArg);
+void TurnOn_Off(void* Copy_pvArg);
+
+void IntryToPlay(void);
+void BallMovment (u8 Copy_u8Address);
 
 
 int main()
@@ -29,87 +27,99 @@ int main()
 	LCD_enuInit();
 	EXTI_enuInit();
 
-	EXTI_enuCallBack(INT0,&func1);
-	EXTI_enuCallBack(INT1,&func2);
-	EXTI_enuCallBack(INT2,&func3);
+	EXTI_enuCallBack(INT0,Player1Rocket,NULL);
+	EXTI_enuCallBack(INT1,Player2Rocket,NULL);
+	EXTI_enuCallBack(INT2,TurnOn_Off,NULL);
 
 	EnableGlobalEnterrupt();
 
-	u8 Local_Iterator;
-
 	LCD_enuSendCommand(0x0c);//to turn off  the cursor and its blink
 
-	LCD_enuGoToXY(0,0);
-	LCD_enuSendString("Press the button");
-	LCD_enuGoToXY(1,5);
-	LCD_enuSendString("to play");
+
+	u8 Local_Iterator;
+
+	IntryToPlay();
 
 	while(1)
 	{
-		while(p)
+
+		while(Switch)
 		{
-		if(p1==1)
-		{
-			if(!p)
+			if(Player_1==1)
+			{
+				if(!Switch)
+				{
+					break;
+				}
+				else
+				{
+					LCD_enuClearLCD();
+					LCD_enuGoToXY(0,2);
+					LCD_enuSendString("Player 2 WIN");
+					_delay_ms(500);
+					LCD_enuGoToXY(1,3);
+					LCD_enuSendString("Play again?");
+					Switch=0;
+					break;
+				}
+			}
+			for(Local_Iterator=1;Local_Iterator<15;Local_Iterator++)
+			{
+				if(!Switch)
+				{
+					break;
+				}
+				else
+				{
+					BallMovment(Local_Iterator);
+				}
+			}
+			if(Player_2==0)
+			{
+				if(!Switch)
+				{
+					break;
+				}
+				else
+				{
+				LCD_enuClearLCD();
+				LCD_enuGoToXY(0,2);
+				LCD_enuSendString("Player 1 WIN");
+				_delay_ms(500);
+				LCD_enuGoToXY(1,3);
+				LCD_enuSendString("Play again?");
+				Switch=0;
 				break;
-			LCD_enuClearLCD();
-			LCD_enuGoToXY(0,2);
-			LCD_enuSendString("Player 2 WIN");
-			_delay_ms(500);
-			LCD_enuGoToXY(1,3);
-			LCD_enuSendString("Play again?");
-			p=0;
-			break;
+				}
+			}
+			for(Local_Iterator=14;Local_Iterator>0;Local_Iterator--)
+			{
+				if(!Switch)
+				{
+					break;
+				}
+				else
+				{
+					BallMovment(Local_Iterator);
+				}
+			}
 		}
-		for(Local_Iterator=1;Local_Iterator<15;Local_Iterator++)
-		{
-			if(!p)
-				break;
-			LCD_enuGoToXY(!(Local_Iterator&1),Local_Iterator);
-			LCD_enuDisplayChar('o');
-			_delay_ms(150);
-			LCD_enuGoToXY(!(Local_Iterator&1),Local_Iterator);
-			LCD_enuDisplayChar(' ');
-		}
-		if(p2==0)
-		{
-			if(!p)
-				break;
-			LCD_enuClearLCD();
-			LCD_enuGoToXY(0,2);
-			LCD_enuSendString("Player 1 WIN");
-			_delay_ms(500);
-			LCD_enuGoToXY(1,3);
-			LCD_enuSendString("Play again?");
-			p=0;
-			break;
-		}
-		for(Local_Iterator=14;Local_Iterator>0;Local_Iterator--)
-		{
-			if(!p)
-				break;
-			LCD_enuGoToXY(!(Local_Iterator&1),Local_Iterator);
-			LCD_enuDisplayChar('o');
-			_delay_ms(150);
-			LCD_enuGoToXY(!(Local_Iterator&1),Local_Iterator);
-			LCD_enuDisplayChar(' ');
-		}
-		}
+		Player_1=0,Player_2=0;
 	}
 }
 
+//==============================================================================================================================================
 
 
-
-void func1(void)
+void Player1Rocket(void* Copy_pvArg)
 {
-	if(p1==1)
+	if(Player_1==1)
 	{
 		LCD_enuGoToXY(1,0);
 		LCD_enuDisplayChar(' ');
 		LCD_enuGoToXY(0,0);
 		LCD_enuDisplayChar('|');
-		p1=0;
+		Player_1=0;
 	}
 	else
 	{
@@ -117,19 +127,19 @@ void func1(void)
 		LCD_enuDisplayChar(' ');
 		LCD_enuGoToXY(1,0);
 		LCD_enuDisplayChar('|');
-		p1=1;
+		Player_1=1;
 	}
 }
 
-void func2(void)
+void Player2Rocket(void* Copy_pvArg)
 {
-	if(p2==1)
+	if(Player_2==1)
 	{
 		LCD_enuGoToXY(1,15);
 		LCD_enuDisplayChar(' ');
 		LCD_enuGoToXY(0,15);
 		LCD_enuDisplayChar('|');
-		p2=0;
+		Player_2=0;
 	}
 	else
 	{
@@ -137,20 +147,16 @@ void func2(void)
 		LCD_enuDisplayChar(' ');
 		LCD_enuGoToXY(1,15);
 		LCD_enuDisplayChar('|');
-		p2=1;
+		Player_2=1;
 	}
 }
 
-void func3(void)
+void TurnOn_Off(void* Copy_pvArg)
 {
-	if(p==1)
+	if(Switch==1)
 	{
-		LCD_enuClearLCD();
-		LCD_enuGoToXY(0,0);
-		LCD_enuSendString("Press the button");
-		LCD_enuGoToXY(1,5);
-		LCD_enuSendString("to play");
-		p=0;
+		IntryToPlay();
+		Switch=0;
 		_delay_ms(300);
 	}
 	else
@@ -160,6 +166,26 @@ void func3(void)
 		LCD_enuDisplayChar('|');
 		LCD_enuGoToXY(0,15);
 		LCD_enuDisplayChar('|');
-		p=1;
+		Switch=1;
 	}
+}
+
+//===============================================================================================================================================
+
+void IntryToPlay(void)
+{
+	LCD_enuClearLCD();
+	LCD_enuGoToXY(0,0);
+	LCD_enuSendString("Press the button");
+	LCD_enuGoToXY(1,5);
+	LCD_enuSendString("to play");
+}
+
+void BallMovment (u8 Copy_u8Address)
+{
+	LCD_enuGoToXY(!(Copy_u8Address&1),Copy_u8Address);
+	LCD_enuDisplayChar('o');
+	_delay_ms(150);
+	LCD_enuGoToXY(!(Copy_u8Address&1),Copy_u8Address);
+	LCD_enuDisplayChar(' ');
 }
