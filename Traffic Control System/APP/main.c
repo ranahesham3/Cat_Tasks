@@ -6,14 +6,14 @@
  */
 
 
-#include "stdTypes.h"
-#include "bit_math.h"
-#include "errorState.h"
+#include "../LIB/stdTypes.h"
+#include "../LIB/bit_math.h"
+#include "../LIB/errorState.h"
 
-#include "DIO_init.h"
-#include "Timer_init.h"
-#include "EXTI_init.h"
-#include "GIE.h"
+#include "../MCAL/DIO/DIO_init.h"
+#include "../MCAL/TIMER/Timer_init.h"
+#include "../MCAL/EXTI/EXTI_init.h"
+#include "../MCAL/GIE/GIE.h"
 //======================================================================================================
 #define CAR_PORT			DIO_u8PORTA
 #define Pedestrain_PORT		DIO_u8PORTB

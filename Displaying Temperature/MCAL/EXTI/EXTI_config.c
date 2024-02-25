@@ -6,7 +6,7 @@
  */
 
 
-#include "stdTypes.h"
+#include "../../LIB/stdTypes.h"
 
 #include "EXTI_priv.h"
 #include "EXTI_config.h"

@@ -6,8 +6,8 @@
  */
 
 
-#include "bit_math.h"
-#include "stdTypes.h"
+#include "../../LIB/bit_math.h"
+#include "../../LIB/stdTypes.h"
 //#include "bit_math.h"
 
 #include "GIE.h"

@@ -16,4 +16,6 @@ typedef long double           f80  ;
 
 #define NULL		(void*)0
 
+
+
 #endif /* STDTYPES_H_ */

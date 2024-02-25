@@ -8,6 +8,7 @@
 #ifndef EXTI_CONFIG_H_
 #define EXTI_CONFIG_H_
 
+#include "../../LIB/stdTypes.h"
 
 typedef struct{
 	u8 EXTI_u8State;

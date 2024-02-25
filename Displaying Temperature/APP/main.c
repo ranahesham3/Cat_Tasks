@@ -1,11 +1,11 @@
-#include "stdTypes.h"
-#include "errorState.h"
+#include "../LIB/stdTypes.h"
+#include "../LIB/errorState.h"
 
 
-#include "DIO_init.h"
-#include "ADC_init.h"
-#include "LCD_init.h"
-#include "LM35_init.h"
+#include "../MCAL/DIO/DIO_init.h"
+#include "../MCAL/ADC/ADC_init.h"
+#include "../HAL/LCD/LCD_init.h"
+#include "../HAL/LM35/LM35_init.h"
 
 
 void Display_Temp(u16 Temperature);

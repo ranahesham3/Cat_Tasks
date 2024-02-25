@@ -6,17 +6,17 @@
  */
 
 
-#include "stdTypes.h"
-#include "errorState.h"
-#include "bit_math.h"
+#include "../../LIB/stdTypes.h"
+#include "../../LIB/errorState.h"
+#include "../../LIB/bit_math.h"
 
 
 #include "LM35_priv.h"
 #include "LM35_config.h"
 #include "LM35_init.h"
 
-#include "DIO_init.h"
-#include "ADC_init.h"
+#include "../../MCAL/DIO/DIO_init.h"
+#include "../../MCAL/ADC/ADC_init.h"
 
 //=============================================================================================
 

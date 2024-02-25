@@ -6,8 +6,8 @@
  */
 
 
-#include "stdTypes.h"
-#include "errorState.h"
+#include "../../LIB/stdTypes.h"
+#include "../../LIB/errorState.h"
 
 #include "PORT_config.h"
 #include "PORT_priv.h"

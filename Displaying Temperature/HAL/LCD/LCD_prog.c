@@ -6,10 +6,11 @@
  */
 
 
-#include "stdTypes.h"
-#include "errorState.h"
+#include "../../LIB/stdTypes.h"
+#include "../../LIB/errorState.h"
 
-#include "DIO_init.h"
+#include "../../MCAL/DIO/DIO_init.h"
+
 
 #include "LCD_config.h"
 #include "LCD_priv.h"

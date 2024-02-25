@@ -5,13 +5,12 @@
  */
 
 
-#include "stdTypes.h"
-#include "errorState.h"
-#include "bit_math.h"
+#include "../../LIB/stdTypes.h"
+#include "../../LIB/errorState.h"
+#include "../../LIB/bit_math.h"
 
-#include "DIO_init.h"
-#include "GIE.h"
-#include "Interrupt.h"
+#include "../GIE/GIE.h"
+#include "../Interrupt.h"
 
 #include "EXTI_config.h"
 #include "EXTI_priv.h"

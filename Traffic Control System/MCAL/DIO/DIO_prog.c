@@ -8,9 +8,8 @@
 #ifndef DIO_PROG_C_
 #define DIO_PROG_C_
 
-#include "stdTypes.h"
-#include "errorState.h"
-#include "bit_math.h"
+#include "../../LIB/stdTypes.h"
+#include "../../LIB/errorState.h"
 
 #include "DIO_config.h"
 #include "DIO_priv.h"
@@ -46,7 +45,7 @@ ES_t DIO_enuSetPortDirection(u8 Copy_u8PortID,u8 Copy_u8Value)
 		switch(Copy_u8PortID)
 		{
 		case DIO_PORTA:
-			SET_
+			DDRA=Copy_u8Value;
 			break;
 		case DIO_PORTB:
 			DDRB=Copy_u8Value;
@@ -191,7 +190,7 @@ ES_t DIO_enuSetPinDirection(u8 Copy_u8PortID,u8 Copy_u8PinID,u8 Copy_u8Value)
 			DDRB|=(Copy_u8Value<<Copy_u8PinID);
 			break;
 		case DIO_PORTC:
-			DDRA&=~(DIO_MASK_BIT<<Copy_u8PinID);
+			DDRC&=~(DIO_MASK_BIT<<Copy_u8PinID);
 			DDRC|=(Copy_u8Value<<Copy_u8PinID);
 			break;
 		case DIO_PORTD:
@@ -228,7 +227,7 @@ ES_t DIO_enuSetPinValue(u8 Copy_u8PortID,u8 Copy_u8PinID,u8 Copy_u8Value)
 			PORTB|=(Copy_u8Value<<Copy_u8PinID);
 			break;
 		case DIO_PORTC:
-			PORTA&=~(DIO_MASK_BIT<<Copy_u8PinID);
+			PORTC&=~(DIO_MASK_BIT<<Copy_u8PinID);
 			PORTC|=(Copy_u8Value<<Copy_u8PinID);
 			break;
 		case DIO_PORTD:

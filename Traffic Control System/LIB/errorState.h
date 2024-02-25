@@ -13,7 +13,9 @@ typedef enum
 	ES_NOK,
 	ES_OK,
 	ES_NULL_POINTER,
-	ES_OUT_OF_RANGE
+	ES_OUT_OF_RANGE,
+	ES_TIMEOUT,
+	ES_BUSY_FUNC
 }ES_t;
 
 

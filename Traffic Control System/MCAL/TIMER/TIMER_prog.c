@@ -6,10 +6,10 @@
  */
 
 
-#include "stdTypes.h"
-#include "errorState.h"
-#include "bit_math.h"
-#include "Interrupt.h"
+#include "../../LIB/stdTypes.h"
+#include "../../LIB/errorState.h"
+#include "../../LIB/bit_math.h"
+#include "../Interrupt.h"
 
 #include "Timer_init.h"
 #include "TIMER_priv.h"
