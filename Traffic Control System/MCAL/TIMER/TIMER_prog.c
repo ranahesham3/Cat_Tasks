@@ -267,10 +267,10 @@ ES_t TIMER0_enuDelayMilliSecondAsynch(u32 Copy_u32Time , void (*Copy_PfunCallBac
 }
 
 
-ES_t IMER0_enuGeneratePWM(u8 Copy_u8DutyCycle)
+ES_t TIMER0_enuGeneratePWM(u8 Copy_u8DutyCycle)
 {
 	ES_t Local_enuErrorState=ES_NOK;
-
+#if(WAVEFORM_GENERATION_MODE ==TIMER0_FAST_PWM_MODE)
 	if((Copy_u8DutyCycle>0)||(Copy_u8DutyCycle<100))
 	{
 #if (COMPARE_MATCH_OUTPUT_MODE == OC0_NON_INVERTING_MODE)
@@ -288,8 +288,28 @@ ES_t IMER0_enuGeneratePWM(u8 Copy_u8DutyCycle)
 	{
 		Local_enuErrorState=ES_OUT_OF_RANGE;
 	}
+
+#elif(WAVEFORM_GENERATION_MODE ==TIMER0_PHASE_CORRECT_PWM_MODE)
+	if((Copy_u8DutyCycle>0)||(Copy_u8DutyCycle<100))
+	{
+#if (COMPARE_MATCH_OUTPUT_MODE ==CLEAR_UP_COUNTING_SET_DOWN_COUNTING_OC0)
+	f32 Local_f32OVFTime=TIMER0_OVF_COUNTS*((f32)TIMER_CLOCK_SELECT/TIMER0_F_CPU);
+	OCR0=(Copy_u8DutyCycle*TIMER0_OVF_COUNTS/TIMER0_PERCENTAGE_RATIO);
+#elif (COMPARE_MATCH_OUTPUT_MODE ==SET_UP_COUNTING_CLEAR_DOWN_COUNTING_OC0)
+	f32 Local_f32OVFTime=TIMER0_OVF_COUNTS*((f32)TIMER_CLOCK_SELECT/TIMER0_F_CPU);
+	OCR0=Local_f32OVFTime-(Copy_u8DutyCycle*TIMER0_OVF_COUNTS/TIMER0_PERCENTAGE_RATIO);
+#endif
+	Local_enuErrorState=ES_OK;
+	}
+	else
+	{
+		Local_enuErrorState=ES_OUT_OF_RANGE;
+	}
+
+#endif
 	return Local_enuErrorState;
 }
+
 
 
 

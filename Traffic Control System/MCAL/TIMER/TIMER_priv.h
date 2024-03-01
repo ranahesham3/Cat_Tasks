@@ -45,41 +45,42 @@
 //==================================================================================================================
 
 /* Clock Select used by the counter */
-#define TIMER_NO_CLOCK							0
-#define TIMER_NO_Prescaler			            1
-#define TIMER_Prescaler8						8
-#define TIMER_Prescaler64						64
-#define TIMER_Prescaler256						256
-#define TIMER_Prescaler1024						1024
-#define TIMER_EXTERNAL_CLOCK_SOURCE_FALING		6
-#define TIMER_EXTERNAL_CLOCK_SOURCE_RISING		7
+#define TIMER_NO_CLOCK								0
+#define TIMER_NO_Prescaler			           	 	1
+#define TIMER_Prescaler8							8
+#define TIMER_Prescaler64					    	64
+#define TIMER_Prescaler256					    	256
+#define TIMER_Prescaler1024					    	1024UL
+#define TIMER_EXTERNAL_CLOCK_SOURCE_FALING	    	6
+#define TIMER_EXTERNAL_CLOCK_SOURCE_RISING			7
 
-#define TIMER_Prescaller_Mask					0x07
+#define TIMER_Prescaller_Mask						0x07
 
 
 
 /* Waveform Generation Mode */
-#define TIMER0_NORMAL_MODE						0
-#define TIMER0_PHASE_CORRECT_PWM_MODE			1
-#define TIMER0_CTC_MODE							2
-#define TIMER0_FAST_PWM_MODE					3
+#define TIMER0_NORMAL_MODE							0
+#define TIMER0_PHASE_CORRECT_PWM_MODE				1
+#define TIMER0_CTC_MODE								2
+#define TIMER0_FAST_PWM_MODE						3
 
 
 
 /* Compare Match Output Mode */
-#define OC0_DISCONNECTED						0
-#define OC0_TOGGLE								1
-#define OC0_CLEAR								2
-#define OC0_SET									3
+#define OC0_DISCONNECTED							0
+#define OC0_TOGGLE									1
+#define OC0_CLEAR									2
+#define OC0_SET										3
 
-#define OC0_NON_INVERTING_MODE					2
-#define OC0_INVERTING_MODE						3
+#define OC0_NON_INVERTING_MODE						2
+#define OC0_INVERTING_MODE							3
 
+#define CLEAR_UP_COUNTING_SET_DOWN_COUNTING_OC0		2
+#define SET_UP_COUNTING_CLEAR_DOWN_COUNTING_OC0		3
 
-
-#define TIMER0_F_CPU							1000UL
-#define TIMER0_OVF_COUNTS						256
-#define TIMER0_PERCENTAGE_RATIO					100.0
+#define TIMER0_F_CPU								1000UL
+#define TIMER0_OVF_COUNTS							256
+#define TIMER0_PERCENTAGE_RATIO						100.0
 
 
 #endif /* TIMER_PRIV_H_ */
